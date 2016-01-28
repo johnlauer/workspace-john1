@@ -72,6 +72,9 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
             // Add our billboard to the menu (has name, url, picture of workspace)
             this.addBillboardToWorkspaceMenu();
             
+            // load lua editor
+            this.loadJohnLuaEditor();
+            
             // Setup an event to react to window resize. This helps since
             // some of our widgets have a manual resize to cleanly fill
             // the height of the browser window. You could turn this off and
@@ -111,6 +114,26 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
          */
         onResize: function() {
             if (this.widgetConsole) this.widgetConsole.resize();
+        },
+        loadJohnLuaEditor: function() {
+            var that = this;
+            chilipeppr.load(
+              "#com-chilipeppr-widget-luaeditor-instance",
+              "http://raw.githubusercontent.com/johnlauer/widget-luaeditor/master/auto-generated-widget.html",
+              function() {
+                // Callback after widget loaded into #myDivWidgetInsertedInto
+                cprequire(
+                  "inline:com-chilipeppr-widget-luaeditor", // the id you gave your widget
+                  function(mywidget) {
+                    // Callback that is passed reference to your newly loaded widget
+                    console.log("My widget just got loaded.", mywidget);
+                    mywidget.init();
+                    that.myLuaEditorInstance = mywidget;
+                    mywidget.resize();
+                  }
+                );
+              }
+            );
         },
         /**
          * Load the Serial Port JSON Server widget via chilipeppr.load()
