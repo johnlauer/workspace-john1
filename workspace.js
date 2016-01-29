@@ -67,13 +67,16 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
             this.loadConsoleWidget(function() {
                 setTimeout(function() { $(window).trigger('resize'); }, 100);
             });
+
+            // load lua editor
+            this.loadJohnLuaEditor();
+
+
             // Create our workspace upper right corner triangle menu
             this.loadWorkspaceMenu();
             // Add our billboard to the menu (has name, url, picture of workspace)
             this.addBillboardToWorkspaceMenu();
             
-            // load lua editor
-            this.loadJohnLuaEditor();
             
             // Setup an event to react to window resize. This helps since
             // some of our widgets have a manual resize to cleanly fill
@@ -114,6 +117,7 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
          */
         onResize: function() {
             if (this.widgetConsole) this.widgetConsole.resize();
+            if (this.myLuaEditorInstance) this.myLuaEditorInstance.resize();
         },
         loadJohnLuaEditor: function() {
             var that = this;
@@ -122,16 +126,18 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
               "http://raw.githubusercontent.com/johnlauer/widget-luaeditor/master/auto-generated-widget.html",
               function() {
                 // Callback after widget loaded into #myDivWidgetInsertedInto
+                
                 cprequire(
-                  "inline:com-chilipeppr-widget-luaeditor", // the id you gave your widget
+                  ["inline:com-chilipeppr-widget-luaeditor"], // the id you gave your widget
                   function(mywidget) {
                     // Callback that is passed reference to your newly loaded widget
                     console.log("My widget just got loaded.", mywidget);
                     mywidget.init();
                     that.myLuaEditorInstance = mywidget;
-                    mywidget.resize();
+                    
                   }
                 );
+                
               }
             );
         },
@@ -208,7 +214,7 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
             chilipeppr.load(
                 "http://fiddle.jshell.net/chilipeppr/zMbL9/show/light/",
                 function() {
-                    require(['inline:com-chilipeppr-elem-pubsubviewer'], function(pubsubviewer) {
+                    cprequire(['inline:com-chilipeppr-elem-pubsubviewer'], function(pubsubviewer) {
 
                         var el = $('#' + that.id + ' .com-chilipeppr-ws-menu .dropdown-menu-ws');
                         console.log("got callback for attachto menu for workspace. attaching to el:", el);
