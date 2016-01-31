@@ -68,10 +68,7 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
                 setTimeout(function() { $(window).trigger('resize'); }, 100);
             });
 
-            // load lua editor
-            this.loadJohnLuaEditor();
-
-
+            
             // Create our workspace upper right corner triangle menu
             this.loadWorkspaceMenu();
             // Add our billboard to the menu (has name, url, picture of workspace)
