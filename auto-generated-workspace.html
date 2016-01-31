@@ -160,6 +160,7 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
                 setTimeout(function() { $(window).trigger('resize'); }, 100);
             });
 
+            this.loadLuaEditorWidget();
             
             // Create our workspace upper right corner triangle menu
             this.loadWorkspaceMenu();
@@ -207,6 +208,30 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
         onResize: function() {
             if (this.widgetConsole) this.widgetConsole.resize();
             if (this.myLuaEditorInstance) this.myLuaEditorInstance.resize();
+        },
+        /**
+         * Load the Lua Editor widget via chilipeppr.load()
+         */
+        loadLuaEditorWidget: function(callback) {
+
+            var that = this;
+
+            chilipeppr.load(
+              "#com-chilipeppr-widget-luaeditor-instance",
+              "http://raw.githubusercontent.com/chilipeppr/widget-luaeditor/master/auto-generated-widget.html",
+              function() {
+                // Callback after widget loaded into #myDivWidgetLuaeditor
+                // Now use require.js to get reference to instantiated widget
+                cprequire(
+                  ["inline:com-chilipeppr-widget-luaeditor"], // the id you gave your widget
+                  function(myObjWidgetLuaeditor) {
+                    // Callback that is passed reference to the newly loaded widget
+                    console.log("Widget / Lua Editor just got loaded.", myObjWidgetLuaeditor);
+                    myObjWidgetLuaeditor.init();
+                  }
+                );
+              }
+            );
         },
         /**
          * Load the Serial Port JSON Server widget via chilipeppr.load()
@@ -354,7 +379,7 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
 
                 <!-- Center Column -->
                 <div class="col-md-5 col-pad10">
-                    <div id="">
+                    <div id="com-chilipeppr-widget-luaeditor-instance">
                         <p class="sample" style="min-height:200px;">Lua Editor goes here</p>
                     </div>
                 </div>
