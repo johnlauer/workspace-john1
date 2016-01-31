@@ -160,6 +160,7 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
                 setTimeout(function() { $(window).trigger('resize'); }, 100);
             });
 
+            this.loadCurrentSensorWidget();
             this.loadLuaEditorWidget();
             
             // Create our workspace upper right corner triangle menu
@@ -208,6 +209,27 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
         onResize: function() {
             if (this.widgetConsole) this.widgetConsole.resize();
             if (this.myLuaEditorInstance) this.myLuaEditorInstance.resize();
+        },
+        /**
+         * Load my current sensor widget
+         */
+        loadCurrentSensorWidget: function() {
+            chilipeppr.load(
+                "#net-mydomain-widget-currentsensor-instance",
+                "http://raw.githubusercontent.com/johnlauer/widget-currentsensor/master/auto-generated-widget.html",
+                function() {
+                    // Callback after widget loaded into #myDivNetMydomainWidgetCurrentsensor
+                    // Now use require.js to get reference to instantiated widget
+                    cprequire(
+                        ["inline:net-mydomain-widget-currentsensor"], // the id you gave your widget
+                        function(myObjNetMydomainWidgetCurrentsensor) {
+                            // Callback that is passed reference to the newly loaded widget
+                            console.log("Widget / Current Sensor just got loaded.", myObjNetMydomainWidgetCurrentsensor);
+                            myObjNetMydomainWidgetCurrentsensor.init();
+                        }
+                    );
+                }
+            );
         },
         /**
          * Load the Lua Editor widget via chilipeppr.load()
@@ -369,6 +391,10 @@ cpdefine("inline:com-chilipeppr-workspace-john1", ["chilipeppr_ready"], function
 
                     <div id="mywidget1-instance">
                         <p class="sample">Widget 1 goes here</p>
+                    </div>
+                    
+                    <div id="net-mydomain-widget-currentsensor-instance">
+                        <p class="sample">My current sensor widget goes here</p>
                     </div>
 
                     <div id="com-chilipeppr-widget-spconsole-instance">
